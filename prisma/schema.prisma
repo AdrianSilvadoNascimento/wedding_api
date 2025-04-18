@@ -15,7 +15,7 @@ model Guest {
   @@map("guests")
 }
 
-model Gifts {
+model Gift {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String @default("")
   image String @default("")

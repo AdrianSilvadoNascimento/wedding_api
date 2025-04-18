@@ -8,4 +8,6 @@ export class GiftModel {
   price: number;
 
   description: string;
+
+  image: string;
 }

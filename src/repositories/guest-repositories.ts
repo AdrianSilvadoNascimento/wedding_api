@@ -1,7 +1,10 @@
+import { GuestModel } from "../dtos/guest-model";
+import { GuestEntity } from "../entity/guest.entity";
+
 export abstract class GuestRepository {
-  abstract createGuest(props: any): Promise<any>;
-  abstract getGuestById(id: string): Promise<any>;
-  abstract updateGuest(id: string, props: any): Promise<any>;
-  abstract deleteGuest(id: string): Promise<any>;
-  abstract getAllGuests(): Promise<any[]>;
+  abstract createGuest(props: GuestModel): Promise<GuestEntity>;
+  abstract getGuestById(id: string): Promise<GuestEntity>;
+  abstract updateGuest(id: string, props: GuestModel): Promise<GuestEntity>;
+  abstract deleteGuest(id: string): Promise<GuestEntity>;
+  abstract getAllGuests(): Promise<GuestEntity[]>;
 }

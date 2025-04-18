@@ -1,7 +1,10 @@
+import { GiftModel } from "../dtos/gift-model";
+import { GiftEntity } from "../entity/gift.entity";
+
 export abstract class GiftRepository {
-  abstract createGift(props: any): Promise<any>;
-  abstract getGiftById(id: string): Promise<any>;
-  abstract updateGift(id: string, props: any): Promise<any>;
-  abstract deleteGift(id: string): Promise<any>;
-  abstract getAllGifts(): Promise<any[]>;
+  abstract createGift(props: GiftModel): Promise<GiftEntity>;
+  abstract getGiftById(id: string): Promise<GiftEntity>;
+  abstract updateGift(id: string, props: GiftModel): Promise<GiftEntity>;
+  abstract deleteGift(id: string): Promise<GiftEntity>;
+  abstract getAllGifts(): Promise<GiftEntity[]>;
 }

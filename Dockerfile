@@ -19,7 +19,7 @@ RUN npm rebuild bcrypt --build-from-source
 COPY . .
 
 # Gera os arquivos do Prisma (se necessário)
-# RUN npx prisma generate
+RUN npx prisma generate
 
 # Compila a aplicação NestJS
 RUN npm run build
