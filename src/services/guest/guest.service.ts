@@ -16,7 +16,7 @@ export class GuestService {
     return this.guestRepository.getGuestById(id);
   }
 
-  async createGuest(guestModel: GuestModel): Promise<GuestEntity> {
+  async createGuest(guestModel: GuestModel): Promise<GuestEntity[]> {
     return this.guestRepository.createGuest(guestModel);
   }
 
@@ -24,7 +24,7 @@ export class GuestService {
     return this.guestRepository.updateGuest(id, guestModel);
   }
 
-  async deleteGuest(id: string): Promise<GuestEntity> {
+  async deleteGuest(id: string): Promise<GuestEntity[]> {
     return this.guestRepository.deleteGuest(id);
   }
 }

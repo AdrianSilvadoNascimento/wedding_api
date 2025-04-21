@@ -9,15 +9,39 @@ import { GuestEntity } from "../../entity/guest.entity";
 export class GuestPrismaRepository implements GuestRepository {
   constructor(private readonly prismaService: PrismaService) { }
 
-  async createGuest(props: GuestModel): Promise<GuestEntity> {
-    try {      
-      const guest = await this.prismaService.guest.create({
-        data: props,
-      });
+  async createGuest(props: GuestModel): Promise<GuestEntity[]> {
+    try {
+      if (props.name.includes(',')) {
+        const registeredGuests = await this.prismaService.guest.findMany()
+        const guests = props.name.split(',').map((name: string) => name.trim())
+        
+        const newGuests = guests.filter((name: string) => {
+          return !registeredGuests.some((guest: GuestEntity) => guest.name === name)
+        })
 
-      if (!guest) throw new NotFoundException("Guest not found");
+        await this.prismaService.guest.createMany({
+          data: newGuests.map((name: string) => ({
+            name,
+            is_by_hellen: props.is_by_hellen,
+          })),
+        });
 
-      return guest;
+        const createdGuests = await this.prismaService.guest.findMany({
+          where: {
+            name: { in: newGuests },
+          },
+        });
+
+        return createdGuests;
+      } else {
+        const guest = await this.prismaService.guest.create({
+          data: props,
+        });
+  
+        if (!guest) throw new NotFoundException("Guest not found");
+  
+        return [guest];
+      }
     } catch (error) {
       throw new InternalServerErrorException("Error creating guest", error);
     }
@@ -52,7 +76,7 @@ export class GuestPrismaRepository implements GuestRepository {
     }
   }
 
-  async deleteGuest(id: string): Promise<GuestEntity> {
+  async deleteGuest(id: string): Promise<GuestEntity[]> {
     try {
       const guest = await this.prismaService.guest.delete({
         where: { id },
@@ -60,7 +84,7 @@ export class GuestPrismaRepository implements GuestRepository {
 
       if (!guest) throw new NotFoundException("Guest not found");
 
-      return guest;
+      return await this.prismaService.guest.findMany();
     } catch (error) {
       throw new InternalServerErrorException("Error deleting guest", error);      
     }
