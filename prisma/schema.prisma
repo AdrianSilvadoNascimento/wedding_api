@@ -8,19 +8,27 @@ datasource db {
 }
 
 model Guest {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String @default("")
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String  @default("")
   is_by_hellen Boolean @default(true)
 
   @@map("guests")
 }
 
 model Gift {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String @default("")
-  image String @default("")
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String @default("")
+  image       String @default("")
   description String @default("")
-  price Float @default(0)
+  price       Float  @default(0)
 
   @@map("gifts")
+}
+
+model Login {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String @unique
+  password String
+
+  @@map("logins")
 }

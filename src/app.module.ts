@@ -12,10 +12,14 @@ import { GuestPrismaRepository } from './repositories/prisma/guest-prisma-reposi
 import { GiftRepository } from './repositories/gift-repositories';
 import { GiftPrismaRepository } from './repositories/prisma/gift-prisma-repositories';
 import { PrismaService } from './database/prisma.service';
+import { LoginService } from './services/login/login.service';
+import { LoginRepository } from './repositories/login-repositories';
+import { LoginPrismaRepository } from './repositories/prisma/login-prisma-repositories';
+import { LoginController } from './controllers/login/login.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, GuestController, GiftController],
+  controllers: [AppController, GuestController, GiftController, LoginController],
   providers: [
     AppService,
     PrismaService,
@@ -29,6 +33,11 @@ import { PrismaService } from './database/prisma.service';
       provide: GiftRepository,
       useClass: GiftPrismaRepository,
     },
+    {
+      provide: LoginRepository,
+      useClass: LoginPrismaRepository,
+    },
+    LoginService,
   ],
 })
 export class AppModule {

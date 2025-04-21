@@ -7,6 +7,8 @@ import {
 import { Request, Response, NextFunction } from 'express';
 import { env } from 'process';
 
+import * as jwt from 'jsonwebtoken';
+
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor() {}
@@ -22,13 +24,13 @@ export class AuthMiddleware implements NestMiddleware {
       throw new UnauthorizedException('Formato de token inválido');
     }
 
-    try {
-      const req_token = token.split(' ')[1];
+    const tokenJWT = token.substring(7);
 
-      if (req_token == env.IDENTITY) {
-        req['user'] = req_token;
-        next();
-      }
+    try {
+      const decoded: any = jwt.verify(tokenJWT, env.IDENTITY);
+
+      req['user'] = decoded;
+      next();
     } catch {
       throw new UnauthorizedException('Token inválido');
     }

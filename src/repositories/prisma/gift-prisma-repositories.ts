@@ -1,9 +1,13 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
-import { GiftRepository } from "../gift-repositories";
-import { PrismaService } from "../../database/prisma.service";
-import { GiftModel } from "../../dtos/gift-model";
-import { GiftEntity } from "../../entity/gift.entity";
+import { GiftRepository } from '../gift-repositories';
+import { PrismaService } from '../../database/prisma.service';
+import { GiftModel } from '../../dtos/gift-model';
+import { GiftEntity } from '../../entity/gift.entity';
 
 @Injectable()
 export class GiftPrismaRepository implements GiftRepository {
@@ -14,10 +18,10 @@ export class GiftPrismaRepository implements GiftRepository {
       const gift = await this.prismaService.gift.create({
         data: props,
       });
-  
+
       return gift;
     } catch (error) {
-      throw new InternalServerErrorException("Error creating gift", error);      
+      throw new InternalServerErrorException('Error creating gift', error);
     }
   }
 
@@ -27,11 +31,11 @@ export class GiftPrismaRepository implements GiftRepository {
         where: { id },
       });
 
-      if (!gift) throw new NotFoundException("Gift not found");
+      if (!gift) throw new NotFoundException('Gift not found');
 
       return gift;
     } catch (error) {
-      throw new InternalServerErrorException("Error getting gift", error);
+      throw new InternalServerErrorException('Error getting gift', error);
     }
   }
 
@@ -42,11 +46,11 @@ export class GiftPrismaRepository implements GiftRepository {
         data: props,
       });
 
-      if (!gift) throw new NotFoundException("Gift not found");
+      if (!gift) throw new NotFoundException('Gift not found');
 
       return gift;
     } catch (error) {
-      throw new InternalServerErrorException("Error updating gift", error);      
+      throw new InternalServerErrorException('Error updating gift', error);
     }
   }
 
@@ -56,23 +60,23 @@ export class GiftPrismaRepository implements GiftRepository {
         where: { id },
       });
 
-      if (!gift) throw new NotFoundException("Gift not found");
+      if (!gift) throw new NotFoundException('Gift not found');
 
       return gift;
     } catch (error) {
-      throw new InternalServerErrorException("Error deleting gift", error);      
+      throw new InternalServerErrorException('Error deleting gift', error);
     }
   }
 
   async getAllGifts(): Promise<GiftEntity[]> {
     try {
-      const gifts = await this.prismaService.gift.findMany()
+      const gifts = await this.prismaService.gift.findMany();
 
-      if (!gifts) return []
+      if (!gifts) return [];
 
       return gifts;
     } catch (error) {
-      throw new InternalServerErrorException("Occurs an error", error);      
+      throw new InternalServerErrorException('Occurs an error', error);
     }
   }
 }
