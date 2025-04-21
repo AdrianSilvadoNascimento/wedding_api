@@ -25,7 +25,7 @@ model Gift {
   @@map("gifts")
 }
 
-model Login {
+model Admin {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   email    String @unique
   password String

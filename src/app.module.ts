@@ -25,6 +25,7 @@ import { LoginController } from './controllers/login/login.controller';
     PrismaService,
     GuestService,
     GiftService,
+    LoginService,
     {
       provide: GuestRepository,
       useClass: GuestPrismaRepository,
@@ -37,7 +38,6 @@ import { LoginController } from './controllers/login/login.controller';
       provide: LoginRepository,
       useClass: LoginPrismaRepository,
     },
-    LoginService,
   ],
 })
 export class AppModule {

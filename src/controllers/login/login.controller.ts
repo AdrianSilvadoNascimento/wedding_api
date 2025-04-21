@@ -3,16 +3,10 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { LoginService } from '../../services/login/login.service';
 import { LoginModel } from '../../dtos/login-model';
 import { LoginResponse } from '../../repositories/prisma/login-prisma-repositories';
-import { LoginEntity } from '../../entity/login.entity';
 
 @Controller('admin')
 export class LoginController {
   constructor(private readonly loginService: LoginService) {}
-
-  @Post('/create-login')
-  async createLogin(@Body() loginModel: LoginModel): Promise<LoginEntity> {
-    return await this.loginService.createLogin(loginModel);
-  }
 
   @Post('/')
   async login(@Body() loginModel: LoginModel): Promise<LoginResponse> {
