@@ -91,8 +91,12 @@ export class GuestPrismaRepository implements GuestRepository {
   }
 
   async getAllGuests(): Promise<GuestEntity[]> {
-    const guests = await this.prismaService.guest.findMany();
-
-    return guests;
+    return this.prismaService.guest.findMany({
+      select: {
+        id: true,
+        name: true,
+        is_by_hellen: true,
+      },
+    });
   }
 }

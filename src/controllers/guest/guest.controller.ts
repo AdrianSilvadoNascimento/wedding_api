@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 
 import { GuestService } from '../../services/guest/guest.service';
 import { GuestModel } from '../../dtos/guest-model';
@@ -22,7 +22,7 @@ export class GuestController {
     return this.guestService.createGuest(guestModel);
   }
 
-  @Post('/update/:id')
+  @Put('/update/:id')
   async updateGuest(@Param('id') id: string, @Body() guestModel: GuestModel) {
     return this.guestService.updateGuest(id, guestModel);
   }
