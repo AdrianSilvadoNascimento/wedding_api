@@ -24,7 +24,7 @@ export class GiftService {
     return this.giftRepository.updateGift(id, giftModel);
   }
 
-  async deleteGift(id: string): Promise<GiftEntity> {
+  async deleteGift(id: string): Promise<GiftEntity[]> {
     return this.giftRepository.deleteGift(id);
   }
 }

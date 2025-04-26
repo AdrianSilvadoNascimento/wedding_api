@@ -54,7 +54,7 @@ export class GiftPrismaRepository implements GiftRepository {
     }
   }
 
-  async deleteGift(id: string): Promise<GiftEntity> {
+  async deleteGift(id: string): Promise<GiftEntity[]> {
     try {
       const gift = await this.prismaService.gift.delete({
         where: { id },
@@ -62,7 +62,7 @@ export class GiftPrismaRepository implements GiftRepository {
 
       if (!gift) throw new NotFoundException('Gift not found');
 
-      return gift;
+      return await this.prismaService.gift.findMany();
     } catch (error) {
       throw new InternalServerErrorException('Error deleting gift', error);
     }
