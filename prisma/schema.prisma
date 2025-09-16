@@ -15,14 +15,41 @@ model Guest {
   @@map("guests")
 }
 
+enum GiftStatus {
+  AVAILABLE
+  BLOCK
+  SOLD
+  RESERVED
+}
+
 model Gift {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String @default("")
-  image       String @default("")
-  description String @default("")
-  price       Float  @default(0)
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String     @default("")
+  image       String     @default("")
+  description String     @default("")
+  link        String     @default("")
+  store       String     @default("")
+  status      GiftStatus @default(AVAILABLE)
+  price       Float      @default(0)
+  blocked_at  DateTime?
+
+  present_owner PresentOwner?
 
   @@map("gifts")
+}
+
+model PresentOwner {
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  name             String @default("")
+  notes            String @default("")
+  estimated_delivery String @default("")
+  gift             Gift   @relation(fields: [gift_id], references: [id], onDelete: Cascade)
+  gift_id          String @unique @db.ObjectId
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("present_owners")
 }
 
 model Admin {

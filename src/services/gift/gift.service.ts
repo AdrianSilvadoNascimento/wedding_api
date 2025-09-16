@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { GiftModel } from '../../dtos/gift-model';
+import { GiftStatus } from '@prisma/client';
+
+import { GiftModel, GiftUpdateModel } from '../../dtos/gift-model';
 import { GiftEntity } from '../../entity/gift.entity';
 import { GiftRepository } from '../../repositories/gift-repositories';
+import { PresentOwnerModel } from '../../dtos/present-owner-model';
 
 @Injectable()
 export class GiftService {
@@ -20,11 +23,19 @@ export class GiftService {
     return this.giftRepository.createGift(giftModel);
   }
 
-  async updateGift(id: string, giftModel: GiftModel): Promise<GiftEntity> {
+  async updateGift(id: string, giftModel: GiftUpdateModel): Promise<GiftEntity> {
     return this.giftRepository.updateGift(id, giftModel);
   }
 
   async deleteGift(id: string): Promise<GiftEntity[]> {
     return this.giftRepository.deleteGift(id);
+  }
+
+  async updateGiftStatus(id: string, status: GiftStatus): Promise<GiftEntity> {
+    return this.giftRepository.updateGiftStatus(id, status);
+  }
+
+  async setPresentOwner(id: string, presentOwnerData: PresentOwnerModel): Promise<GiftEntity> {
+    return this.giftRepository.setPresentOwner(id, presentOwnerData);
   }
 }

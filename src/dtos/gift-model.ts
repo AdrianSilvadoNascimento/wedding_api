@@ -8,6 +8,17 @@ export class GiftModel {
   price: number;
 
   description: string;
+  store: string;
+  link: string;
 
   image: string;
+}
+
+export class GiftUpdateModel {
+  name?: string;
+  price?: number;
+  description?: string;
+  store?: string;
+  link?: string;
+  image?: string;
 }

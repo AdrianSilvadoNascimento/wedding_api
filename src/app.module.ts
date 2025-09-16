@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 
 import { AuthMiddleware } from './utils/auth-middleware/auth-middleware';
 import { AppController } from './app.controller';
@@ -16,9 +17,11 @@ import { LoginService } from './services/login/login.service';
 import { LoginRepository } from './repositories/login-repositories';
 import { LoginPrismaRepository } from './repositories/prisma/login-prisma-repositories';
 import { LoginController } from './controllers/login/login.controller';
+import { GiftGatewayService } from './services/gift/gift-gateway/gift-gateway.service';
+import { GiftTimeoutService } from './services/gift/gift-timeout/gift-timeout.service';
 
 @Module({
-  imports: [],
+  imports: [ScheduleModule.forRoot()],
   controllers: [AppController, GuestController, GiftController, LoginController],
   providers: [
     AppService,
@@ -26,6 +29,8 @@ import { LoginController } from './controllers/login/login.controller';
     GuestService,
     GiftService,
     LoginService,
+    GiftGatewayService,
+    GiftTimeoutService,
     {
       provide: GuestRepository,
       useClass: GuestPrismaRepository,
@@ -48,9 +53,7 @@ export class AppModule {
         '/guest/create',
         '/guest/delete',
         '/guest/update',
-        '/gift/create',
-        '/gift/delete',
-        '/gift/update',
+        '/gift/admin',
       );
   }
 }
