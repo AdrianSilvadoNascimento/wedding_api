@@ -46,7 +46,7 @@ export class GiftTimeoutService {
               include: { present_owner: true },
             });
 
-            this.giftGatewayService.notifyGiftStatusChange(gift.id, GiftStatus.AVAILABLE);
+            this.giftGatewayService.notifyGiftChange(updatedGift);
             
             this.logger.log(`Produto "${gift.name}" (${gift.id}) liberado automaticamente por timeout`);
             

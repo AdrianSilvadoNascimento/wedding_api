@@ -47,15 +47,10 @@ export class GiftPrismaRepository implements GiftRepository {
 
   async updateGift(id: string, props: GiftUpdateModel): Promise<GiftEntity> {
     try {
-      console.log('PROPS:', props);
-      
-      // Filtra apenas os campos que foram fornecidos (não undefined)
       const updateData = Object.fromEntries(
         Object.entries(props).filter(([_, value]) => value !== undefined)
       );
-      
-      console.log('UPDATE_DATA:', updateData);
-      
+
       const gift = await this.prismaService.gift.update({
         where: { id },
         data: updateData,
@@ -103,11 +98,11 @@ export class GiftPrismaRepository implements GiftRepository {
   async updateGiftStatus(id: string, status: GiftStatus): Promise<GiftEntity> {
     try {
       const updateData: any = { status };
-      
+
       if (status === GiftStatus.BLOCK) {
         updateData.blocked_at = new Date();
       }
-      
+
       if (status === GiftStatus.AVAILABLE || status === GiftStatus.RESERVED || status === GiftStatus.SOLD) {
         updateData.blocked_at = null;
       }
@@ -120,7 +115,7 @@ export class GiftPrismaRepository implements GiftRepository {
 
       if (!gift) throw new NotFoundException('Gift not found');
 
-      this.giftGatewayService.notifyGiftStatusChange(id, status);
+      this.giftGatewayService.notifyGiftChange(gift);
 
       return gift;
     } catch (error) {
@@ -144,9 +139,8 @@ export class GiftPrismaRepository implements GiftRepository {
         throw new BadRequestException('Present is not available for reservation/purchase');
       }
 
-      // Verifica se a pessoa já tem outro presente reservado/comprado
       const existingOwner = await this.prismaService.presentOwner.findFirst({
-        where: { 
+        where: {
           name: { equals: presentOwnerData.name, mode: 'insensitive' }
         },
         include: { gift: true }
@@ -156,10 +150,8 @@ export class GiftPrismaRepository implements GiftRepository {
         throw new BadRequestException(`${presentOwnerData.name} já possui um presente (${existingOwner.gift.name})`);
       }
 
-      // Determina o novo status baseado na ação
       const newStatus = presentOwnerData.action === 'RESERVED' ? GiftStatus.RESERVED : GiftStatus.SOLD;
 
-      // Atualiza o presente e cria o present_owner
       const updatedGift = await this.prismaService.gift.update({
         where: { id },
         data: {
@@ -176,8 +168,7 @@ export class GiftPrismaRepository implements GiftRepository {
         include: { present_owner: true }
       });
 
-      // Notifica via WebSocket
-      this.giftGatewayService.notifyGiftStatusChange(id, newStatus);
+      this.giftGatewayService.notifyGiftChange(updatedGift);
 
       console.log(`Present ${existingGift.name} ${presentOwnerData.action.toLowerCase()} by ${presentOwnerData.name}`);
 
